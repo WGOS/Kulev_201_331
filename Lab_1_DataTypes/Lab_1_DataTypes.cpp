@@ -96,7 +96,8 @@ void convertNumberToType(long long number)
 #pragma region Task 4
 void solveEquation()
 {
-	int a, b, answer;
+	int a, b;
+	double answer;
 
 	cout << "4. Solving equation a * x = b" << endl;
 
@@ -109,7 +110,7 @@ void solveEquation()
 	cout << "Enter value of b: ";
 	cin >> b;
 
-	answer = b / a;
+	answer = (double) b / a;
 
 	cout << a << " * x = " << b << endl
 		<< "x = " << b << " / " << a << endl
