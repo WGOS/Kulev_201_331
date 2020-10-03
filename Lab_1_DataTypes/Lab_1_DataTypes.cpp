@@ -122,12 +122,13 @@ void solveEquation()
 #pragma region Task 5
 void findMidPoint()
 {
-	double x1, x2, midPoint;
+	int x1, x2;
+	double midPoint;
 
 	cout << "5. Enter segment coordinates: ";
 	cin >> x1 >> x2;
 
-	midPoint = (x1 + x2) / 2;
+	midPoint = ((double) x1 + x2) / 2;
 
 	cout << "Midpoint coordinate: " << midPoint << endl;
 }
