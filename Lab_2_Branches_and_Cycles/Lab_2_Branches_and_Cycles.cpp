@@ -122,7 +122,7 @@ int fact(int n)
             n *= i;
     else
         for (int i = n + 1; i < 0; i++)
-            n *= i;
+            n = -std::abs(n * i);
 
     return n;
 }
