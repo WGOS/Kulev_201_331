@@ -139,17 +139,16 @@ void findAvgOption()
     while (true)
     {
         cin >> current;
+        short exit = 0;
 
         if (current == 0)
         {
-            bool exit;
-
             wr("Exit? (0 = keep; other = exit): ", false);
             cin >> exit;
-
-            if (exit)
-                break;
         }
+
+        if (exit)
+            break;
 
         count++;
         summ += current;
