@@ -5,3 +5,5 @@
 ## Навигация
 1. [Встроенные типы данных](/Lab_1_DataTypes/)
 2. [Ветвления и циклы](/Lab_2_Branches_and_Cycles/)
+3.1. [Указатели и статические массивы](/Lab_3_1_Pointers_and_Static_Arrays/)
+3.2. [Динамические массивы](/Lab_3_2_Dynamic_Arrays/)
