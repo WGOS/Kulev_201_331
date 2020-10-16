@@ -1,20 +1,179 @@
-// Lab_3_1_Pointers_and_Static_Arrays.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+
+using std::cout;
+using std::cin;
+using std::endl;
+
+#pragma region Prots
+void drawMenu();
+void wr(const char*, bool = true);
+void userInputCharArray();
+void userInputNumArray();
+
+template <typename T>
+void bubbleSort(T*, const int);
+
+void countSortCharSpecial(char*, const int);
+
+template <typename T>
+void mergeSort(T*, const int);
+
+template <typename T>
+void userInputArray(const int);
+#pragma endregion
+
+#define ASCII_START 'a'
+#define ASCII_END 'z'
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    drawMenu();
+
+    return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+#pragma region Other
+void drawMenu()
+{
+    int opt;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+    while (true)
+    {
+        wr("=== Programm menu ===");
+        wr("1. Numeric bubble sort");
+        wr("2. Char count sort");
+        wr("3. Numeric merge sort");
+        wr("4. Exit");
+        wr("Choose one option: ", false);
+
+        cin >> opt;
+
+        switch (opt)
+        {
+        case 1:
+            userInputArray<double[1000]>(opt);
+            break;
+
+        case 2:
+            userInputArray<char[1000]>(opt);
+            break;
+
+        case 3:
+            wr("Sorry but this algorythm has no implementation yet :(");
+            //userInputArray<double[1000]>(opt);
+            break;
+
+        case 4:
+            wr("Exiting");
+            return;
+
+        default:
+            wr("Unknown option!");
+            break;
+        }
+    }
+}
+
+void wr(const char* text, bool nl)
+{
+    cout << text;
+    if (nl)
+        cout << endl;
+}
+#pragma endregion
+
+template <typename T>
+void userInputArray(const int opt)
+{
+    T arr;
+    int size;
+
+    const int maxSize = sizeof(arr) / sizeof(*arr);
+
+    do
+    {
+        cout << "Enter array size (max: " << maxSize << "): ";
+        cin >> size;
+    } while (size > maxSize);
+
+    for (int i = 0; i < size; i++)
+    {
+        do
+        {
+            cout << "[" << i << "] = ";
+            cin >> arr[i];
+        } while (opt == 2 && !(ASCII_START <= arr[i] && arr[i] <= ASCII_END));
+        // Check for a..z range for char array
+    }
+
+    if (maxSize > 1)
+    {
+        switch (opt)
+        {
+        case 1:
+            bubbleSort(arr, size);
+            break;
+
+        case 2:
+            countSortCharSpecial((char*)arr, size);
+            break;
+        case 3:
+            mergeSort(arr, size);
+            break;
+        }
+    }
+
+    wr("Sorted array:");
+    for (int i = 0; i < size; i++)
+        cout << "[" << i << "] = " << arr[i] << endl;
+}
+
+template <typename T>
+void bubbleSort(T* arr, const int size)
+{
+    bool swapped;
+
+    do
+    {
+        swapped = false;
+
+        for (int i = 0; i < size - 1; i++)
+        {
+            if (arr[i] > arr[i + 1])
+            {
+                swapped = true;
+                T buf = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = buf;
+            }
+        }
+
+    } while (swapped);
+}
+
+// This is function for a specific case of sorting chars from a to z!
+void countSortCharSpecial(char* arr, const int size)
+{
+    const int offs = ASCII_START;
+    const int hSize = ASCII_END - ASCII_START + 1;
+    int hArr[hSize] = { 0 };
+    
+    for (int i = 0; i < size; i++)
+        hArr[(int) arr[i] - offs]++;
+
+    int arrIndex = 0;
+    for (int i = 0; i < hSize; i++)
+    {
+        for (int j = 0; j < hArr[i]; j++)
+        {
+            arr[arrIndex] = i + offs;
+            arrIndex++;
+        }
+    }
+}
+
+template <typename T>
+void mergeSort(T* arr, int size)
+{
+    
+}
