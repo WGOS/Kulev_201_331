@@ -7,8 +7,6 @@ using std::endl;
 #pragma region Prots
 void drawMenu();
 void wr(const char*, bool = true);
-void userInputCharArray();
-void userInputNumArray();
 
 template <typename T>
 void bubbleSort(T*, const int);
@@ -154,24 +152,30 @@ void bubbleSort(T* arr, const int size)
 // This is function for a specific case of sorting chars from a to z!
 void countSortCharSpecial(char* arr, const int size)
 {
-    const int offs = ASCII_START;
-    const int hSize = ASCII_END - ASCII_START + 1;
-    int hArr[hSize] = { 0 };
+    const int offset = ASCII_START;
+    const int helpSize = ASCII_END - ASCII_START + 1;
+    int helpArr[helpSize] = { 0 };
     
     for (int i = 0; i < size; i++)
-        hArr[(int) arr[i] - offs]++;
+        helpArr[(int) arr[i] - offset]++;
 
     int arrIndex = 0;
-    for (int i = 0; i < hSize; i++)
+    for (int i = 0; i < helpSize; i++)
     {
-        for (int j = 0; j < hArr[i]; j++)
+        for (int j = 0; j < helpArr[i]; j++)
         {
-            arr[arrIndex] = i + offs;
+            arr[arrIndex] = i + offset;
             arrIndex++;
         }
     }
 }
 
+/// <summary>
+/// Описание этой функции чо она д
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="arr"></param>
+/// <param name="size"></param>
 template <typename T>
 void mergeSort(T* arr, int size)
 {
