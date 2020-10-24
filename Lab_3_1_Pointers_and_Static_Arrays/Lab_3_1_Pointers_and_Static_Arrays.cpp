@@ -170,12 +170,6 @@ void countSortCharSpecial(char* arr, const int size)
     }
 }
 
-/// <summary>
-/// Описание этой функции чо она д
-/// </summary>
-/// <typeparam name="T"></typeparam>
-/// <param name="arr"></param>
-/// <param name="size"></param>
 template <typename T>
 void mergeSort(T* arr, int size)
 {
