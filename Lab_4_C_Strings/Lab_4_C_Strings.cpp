@@ -134,12 +134,12 @@ void subStringOption()
 
     printf_s("Print string (up to 255 symbols): ");
     cin.getline(buf, 255);
-    char* str = new char[strlen(buf)];
+    char* str = new char[strlen(buf) + 1];
     std::copy(buf, buf + strlen(buf) + 1, str);
 
     printf_s("Print substring (up to 255 symbols): ");
     cin.getline(buf, 255);
-    char* subStr = new char[strlen(buf)];
+    char* subStr = new char[strlen(buf) + 1];
     std::copy(buf, buf + strlen(buf) + 1, subStr);
 
     printf_s("Print start position: ");
@@ -161,8 +161,8 @@ void subStringOption()
     else
         printf_s("No occurrences found\n");
 
-    //delete[] str;
-    //delete[] subStr;
+    delete[] str;
+    delete[] subStr;
 }
 
 /// <summary>
