@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{5194b0e4-7000-4777-811d-31a32c5033e4}</ProjectGuid>
-    <RootNamespace>Lab4CStrings</RootNamespace>
+    <ProjectGuid>{7d6f614e-b9ae-4c79-ae01-670e0219adf7}</ProjectGuid>
+    <RootNamespace>Lab42CPPStringsandFiles</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Lab_4_1_C_Strings</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Lab_4_C_Strings.cpp" />
+    <ClCompile Include="Lab_4_2_CPP_Strings_and_Files.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

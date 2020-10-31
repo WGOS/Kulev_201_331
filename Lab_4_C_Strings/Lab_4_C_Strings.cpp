@@ -5,7 +5,7 @@ using std::cin;
 
 #pragma region Prots
 void drawMenu();
-void wr(const char*, const bool = true);
+char* readStr(const int);
 void palindromeOption();
 bool isPalindrome(const char*);
 int findSubstring(const char*, const char*, const int);
@@ -14,7 +14,6 @@ int countSubstring(const char*, const char*);
 void subStringOption();
 void encryptOption();
 void encrypt(char*, const int);
-char* readStr(const int);
 bool isCyrillic(const char);
 bool isUpperC(const char);
 void textProcessOption();
