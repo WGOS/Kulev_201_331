@@ -82,12 +82,13 @@ void drawMenu()
 /// </summary>
 void palindromeOption()
 {
-    char input[256]; // 1 additional index is for terminator
+    char* buf = new char[256]{ 0 }; // 1 additional index is for terminator
 
     printf_s("Enter string to check (up to 255 symbols): ");
-    cin.getline(input, 255);
+    cin.getline(buf, 255);
 
-    printf_s("String is %s%s\n", isPalindrome(input) ? "" : "not ", "palindromic");
+    printf_s("String is %s%s\n", isPalindrome(buf) ? "" : "not ", "palindromic");
+    delete[] buf;
 }
 
 /// <summary>
@@ -97,30 +98,29 @@ void palindromeOption()
 /// <returns>Palindromic</returns>
 bool isPalindrome(const char* str)
 {
-    int symbolCount = 0, currCharNum = 0, originalLen = strlen(str);
+    bool palindromic = true;
+    int bareStringLen = 0, currCharNum = 0, originalLen = strlen(str);
     char currChar;
     char* bareString = new char[originalLen] {0};
 
     for (int i = 0; i < originalLen; i++)
     {
-        if (str[i] != ' ')
-            bareString[symbolCount++] = tolower(str[i]);
+        if (str[i] != ' ') 
+            bareString[bareStringLen++] = tolower(str[i]);
     }
-    
-    int bareStringLen = strlen(bareString);
 
-    for (int i = 0; i < (bareStringLen - 1) / 2; i++)
+
+    for (int i = 0; i < (bareStringLen) / 2; i++)
     {
         if (bareString[i] != bareString[bareStringLen - 1 - i])
         {
-            delete[] bareString;
-            return false;
+            palindromic = false;
+            break;
         }
-            
     }
 
     delete[] bareString;
-    return true;
+    return palindromic;
 }
 #pragma endregion
 
@@ -130,7 +130,7 @@ bool isPalindrome(const char* str)
 /// </summary>
 void subStringOption()
 {
-    char buf[256] = { 0 };
+    char* buf = new char[256]{ 0 };
 
     printf_s("Print string (up to 255 symbols): ");
     cin.getline(buf, 255);
@@ -150,19 +150,21 @@ void subStringOption()
     if (occ == -1)
         printf_s("No occurence found!\n");
     else
-        printf_s("Found occurrence at: %d\n", occ);
+        printf_s("Found first occurrence at: %d\n", occ);
 
-    printf_s("!! Finding all occurrences\n");
+    printf_s("Finding all occurrences\n");
     int* occs = findSubstring(str, subStr);
 
     if (occs[0] != -1)
         for (int i = 0; occs[i] != -1; i++)
-            printf_s("Occurrence #%d at %d\n", i + 1, occs[i]);
+            printf_s("\tOccurrence #%d at %d\n", i + 1, occs[i]);
     else
-        printf_s("No occurrences found\n");
+        printf_s("\tNo occurrences found\n");
 
+    delete[] buf;
     delete[] str;
     delete[] subStr;
+    delete[] occs;
 }
 
 /// <summary>
