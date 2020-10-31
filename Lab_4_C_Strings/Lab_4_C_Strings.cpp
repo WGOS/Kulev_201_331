@@ -26,8 +26,6 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    std::cout << isUpperC('Ù') << std::endl;
-
     drawMenu();
 
 	return 0;
@@ -44,7 +42,7 @@ void drawMenu()
         printf_s("%d. Check if string is palindromic\n", ++menuPos);
         printf_s("%d. Substring\n", ++menuPos);
         printf_s("%d. Encrypt string\n", ++menuPos);
-        printf_s("%d. Sort by last digit asc\n", ++menuPos);
+        printf_s("%d. Select text in braces\n", ++menuPos);
         printf_s("%d. Exit\n", ++menuPos);
         printf_s("Choose one option: ");
 
@@ -122,27 +120,20 @@ void palindromeOption()
 bool isPalindrome(const char* str)
 {
     bool palindromic = true;
-    int bareStringLen = 0, currCharNum = 0, originalLen = strlen(str);
-    char currChar;
-    char* bareString = new char[originalLen] {0};
+    int strLen = strlen(str);
 
-    for (int i = 0; i < originalLen; i++)
+    for (int i = 0, j = strLen - 1; i < j; i++, j--)
     {
-        if (str[i] != ' ') 
-            bareString[bareStringLen++] = tolower(str[i]);
-    }
+        if (str[i] == ' ') i++;
+        if (str[j] == ' ') j--;
 
-
-    for (int i = 0; i < (bareStringLen) / 2; i++)
-    {
-        if (bareString[i] != bareString[bareStringLen - 1 - i])
+        if (str[i] != ' ' && str[j] != ' ' && (tolower(str[i]) != tolower(str[j])))
         {
             palindromic = false;
             break;
         }
     }
-
-    delete[] bareString;
+    
     return palindromic;
 }
 #pragma endregion
@@ -160,7 +151,7 @@ void subStringOption()
     const char* subStr = readStr(255);
 
     printf_s("Print start position: ");
-    const int sPos = atoi(readStr(255)); // does atoi releases RAM?
+    const int sPos = atoi(readStr(255));
 
     const int occ = findSubstring(str, subStr, sPos);
     if (occ == -1)
