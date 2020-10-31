@@ -14,6 +14,9 @@ bool isPalindrome(const char*);
 int findSubstring(const char*, const char*, const int);
 int* findSubstring(const char*, const char*);
 void subStringOption();
+void encryptOption();
+void encrypt(char*, const int);
+char* readStr(const int);
 #pragma endregion
 
 
@@ -31,7 +34,6 @@ int main()
 #pragma region Others
 void drawMenu()
 {
-    char inBuf[256];
     int menuPos = 0;
 
     while (true)
@@ -39,16 +41,14 @@ void drawMenu()
         printf_s("=== Programm menu ===\n");
         printf_s("%d. Check if string is palindromic\n", ++menuPos);
         printf_s("%d. Substring\n", ++menuPos);
-        printf_s("%d. Sort by summ of even digits\n", ++menuPos);
+        printf_s("%d. Encrypt string\n", ++menuPos);
         printf_s("%d. Sort by last digit asc\n", ++menuPos);
         printf_s("%d. Exit\n", ++menuPos);
         printf_s("Choose one option: ");
 
         menuPos = 0;
 
-        cin.getline(inBuf, 255);
-
-        switch (atoi(inBuf))
+        switch (atoi(readStr(255)))
         {
         case 1:
             palindromeOption();
@@ -59,6 +59,7 @@ void drawMenu()
             break;
 
         case 3:
+            encryptOption();
             break;
 
         case 4:
@@ -74,6 +75,27 @@ void drawMenu()
         }
     }
 }
+
+/// <summary>
+/// Reads string from stdin
+/// </summary>
+/// <param name="maxLen">Maximum lenght of string (w/o terminator)</param>
+/// <returns>Pointer to a string</returns>
+char* readStr(const int maxLen)
+{
+    char* str = nullptr;
+    char* buf = new char[maxLen + 1]{ 0 };
+
+    cin.getline(buf, maxLen);
+
+    const int strLen = strlen(buf);
+    str = new char[strLen + 1] {0};
+
+    std::copy(buf, buf + strLen + 1, str);
+    delete[] buf;
+
+    return str;
+}
 #pragma endregion
 
 #pragma region Task 1
@@ -82,13 +104,11 @@ void drawMenu()
 /// </summary>
 void palindromeOption()
 {
-    char* buf = new char[256]{ 0 }; // 1 additional index is for terminator
-
     printf_s("Enter string to check (up to 255 symbols): ");
-    cin.getline(buf, 255);
+    const char* str = readStr(255);
 
-    printf_s("String is %s%s\n", isPalindrome(buf) ? "" : "not ", "palindromic");
-    delete[] buf;
+    printf_s("String is %s%s\n", isPalindrome(str) ? "" : "not ", "palindromic");
+    delete[] str;
 }
 
 /// <summary>
@@ -130,30 +150,23 @@ bool isPalindrome(const char* str)
 /// </summary>
 void subStringOption()
 {
-    char* buf = new char[256]{ 0 };
-
     printf_s("Print string (up to 255 symbols): ");
-    cin.getline(buf, 255);
-    char* str = new char[strlen(buf) + 1];
-    std::copy(buf, buf + strlen(buf) + 1, str);
+    const char* str = readStr(255);
 
     printf_s("Print substring (up to 255 symbols): ");
-    cin.getline(buf, 255);
-    char* subStr = new char[strlen(buf) + 1];
-    std::copy(buf, buf + strlen(buf) + 1, subStr);
+    const char* subStr = readStr(255);
 
     printf_s("Print start position: ");
-    cin.getline(buf, 255);
-    int sPos = atoi(buf);
+    const int sPos = atoi(readStr(255)); // does atoi releases RAM?
 
-    int occ = findSubstring(str, subStr, sPos);
+    const int occ = findSubstring(str, subStr, sPos);
     if (occ == -1)
         printf_s("No occurence found!\n");
     else
         printf_s("Found first occurrence at: %d\n", occ);
 
     printf_s("Finding all occurrences\n");
-    int* occs = findSubstring(str, subStr);
+    const int* occs = findSubstring(str, subStr);
 
     if (occs[0] != -1)
         for (int i = 0; occs[i] != -1; i++)
@@ -161,10 +174,7 @@ void subStringOption()
     else
         printf_s("\tNo occurrences found\n");
 
-    delete[] buf;
-    delete[] str;
-    delete[] subStr;
-    delete[] occs;
+    delete[] str, subStr, occs;
 }
 
 /// <summary>
@@ -213,5 +223,27 @@ int* findSubstring(const char* str, const char* subStr)
     }
 
     return occurrences;
+}
+#pragma endregion
+
+#pragma region Task 3
+void encryptOption()
+{
+    printf_s("Enter string to encrypt (up to 255 symbols): ");
+    char* str = readStr(255);
+
+    printf_s("Enter key: ");
+    const int key = atoi(readStr(255));
+
+    encrypt(str, key);
+
+    printf_s("Encrypted string:\t\n%s\n", str);
+
+    delete[] str;
+}
+
+void encrypt(char* str, const int key)
+{
+
 }
 #pragma endregion
