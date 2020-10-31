@@ -26,8 +26,6 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    printf_s("%d\n", countSubstring("shiiit", "i"));
-
     drawMenu();
 
 	return 0;
