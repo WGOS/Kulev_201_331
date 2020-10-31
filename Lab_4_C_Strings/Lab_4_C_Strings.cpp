@@ -2,9 +2,7 @@
 #include <cstring>
 #include <Windows.h>
 
-using std::cout;
 using std::cin;
-using std::endl;
 
 #pragma region Prots
 void drawMenu();
@@ -17,14 +15,17 @@ void subStringOption();
 void encryptOption();
 void encrypt(char*, const int);
 char* readStr(const int);
+bool isCyrillic(const char);
+bool isUpperC(const char);
 #pragma endregion
-
 
 int main()
 {
     setlocale(LC_ALL, "Russian");
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
+
+    std::cout << isUpperC('Ù') << std::endl;
 
     drawMenu();
 
@@ -227,6 +228,9 @@ int* findSubstring(const char* str, const char* subStr)
 #pragma endregion
 
 #pragma region Task 3
+/// <summary>
+/// Entry function for 3rd task
+/// </summary>
 void encryptOption()
 {
     printf_s("Enter string to encrypt (up to 255 symbols): ");
@@ -242,8 +246,69 @@ void encryptOption()
     delete[] str;
 }
 
+/// <summary>
+/// Encrypts string by offset
+/// </summary>
+/// <param name="str">String to encrypt, will be changed in process</param>
+/// <param name="key">Encryptyion offset</param>
 void encrypt(char* str, const int key)
 {
+    int offset, alphabetStrengh;
+    for (int i = 0; i < strlen(str); i++)
+    {
+        if (str[i] == ' ')
+            continue;
 
+        if (isCyrillic(str[i]))
+        {
+            switch (str[i])
+            {
+            case '¨':
+                str[i] = 'Å';
+                break;
+
+            case '¸':
+                str[i] = 'å';
+                break;
+            }
+
+            alphabetStrengh = 32;
+            offset = isUpperC(str[i]) ? 'À' : 'à';
+        }
+        else
+        {
+            alphabetStrengh = 26;
+            offset = isUpperC(str[i]) ? 'A' : 'a';
+        }
+
+        str[i] = char(int(str[i] + key - offset) % alphabetStrengh + offset);
+    }
+}
+
+/// <summary>
+/// Checks if char is in cyrillic range
+/// </summary>
+/// <param name="c">Char to check</param>
+/// <returns>Is char cyrillic</returns>
+bool isCyrillic(const char c)
+{
+    int tablePos = 256 + c;
+
+    return c < 0 && ((192 <= tablePos && tablePos <= 255) || tablePos == 168 || tablePos == 184);
+}
+
+/// <summary>
+/// Checks if char is in uppercase
+/// </summary>
+/// <param name="c">Char to check</param>
+/// <returns>Is char is in uppercase</returns>
+bool isUpperC(const char c)
+{
+    if (!isCyrillic(c))
+        return isupper(c);
+
+    int tablePos = 256 + c;
+
+    return (192 <= tablePos && tablePos <= 223) || tablePos == 168;
 }
 #pragma endregion
