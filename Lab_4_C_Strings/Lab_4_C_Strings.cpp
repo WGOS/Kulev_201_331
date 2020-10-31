@@ -17,6 +17,7 @@ void encrypt(char*, const int);
 char* readStr(const int);
 bool isCyrillic(const char);
 bool isUpperC(const char);
+void textProcessOption();
 #pragma endregion
 
 int main()
@@ -64,6 +65,7 @@ void drawMenu()
             break;
 
         case 4:
+            textProcessOption();
             break;
 
         case 5:
@@ -310,5 +312,31 @@ bool isUpperC(const char c)
     int tablePos = 256 + c;
 
     return (192 <= tablePos && tablePos <= 223) || tablePos == 168;
+}
+#pragma endregion
+
+#pragma region Task 4
+/// <summary>
+/// Entry function for 4th task.
+/// Prints every phrase inside braces
+/// </summary>
+void textProcessOption()
+{
+    printf_s("Enter text with braces (up to 255 symbols): ");
+    const char* str = readStr(255);
+    const int* occs = findSubstring(str, "\"");
+
+    for (int i = 0; occs[i] != -1; i += 2)
+    {
+        if (occs[i + 1] == -1)
+            break;
+
+        for(int j = occs[i] + 1; j < occs[i + 1]; j++)
+            printf_s("%c", str[j]);
+
+        printf_s("\n");
+    }
+
+    delete[] str, occs;
 }
 #pragma endregion
