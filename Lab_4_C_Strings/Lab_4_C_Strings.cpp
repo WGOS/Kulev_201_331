@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstring>
 #include <Windows.h>
 
 using std::cin;
@@ -11,6 +10,7 @@ void palindromeOption();
 bool isPalindrome(const char*);
 int findSubstring(const char*, const char*, const int);
 int* findSubstring(const char*, const char*);
+int countSubstring(const char*, const char*);
 void subStringOption();
 void encryptOption();
 void encrypt(char*, const int);
@@ -25,6 +25,8 @@ int main()
     setlocale(LC_ALL, "Russian");
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
+
+    printf_s("%d\n", countSubstring("shiiit", "i"));
 
     drawMenu();
 
@@ -196,27 +198,49 @@ int findSubstring(const char* str, const char* subStr, const int startPos)
 /// <returns>Array of index of occurrences with -1 at the end as terminator</returns>
 int* findSubstring(const char* str, const char* subStr)
 {
-    const int strLen = strlen(str), subStrLen = strlen(subStr);
-    int occurrencesCount = 0, occ;
-    int* occurrences = new int[1]{ -1 };
+    const int strLen = strlen(str);
+    const int subStrLen = strlen(subStr);
+    const int occurrenceCount = countSubstring(str, subStr);
 
-    for (int pos = 0; pos < strLen; pos = occ + subStrLen)
+    int* occurrences = new int[occurrenceCount + 1]{ 0 };
+
+    for (int pos = 0, i = 0, occ; pos < strLen; pos = occ + subStrLen, i++)
     {
         occ = findSubstring(str, subStr, pos);
 
         if (occ == -1)
             break;
 
-        int* tmp = new int[++occurrencesCount + 1];
-        std::copy(occurrences, occurrences + occurrencesCount, tmp);
-        delete[] occurrences;
-        occurrences = tmp;
-
-        tmp[occurrencesCount - 1] = occ;
-        tmp[occurrencesCount] = -1;
+        occurrences[i] = occ;
     }
 
+    occurrences[occurrenceCount] = -1;
+
     return occurrences;
+}
+
+/// <summary>
+/// Count occurrences of substring in string
+/// </summary>
+/// <param name="str">String</param>
+/// <param name="subStr">Substring to count</param>
+/// <returns>Occurrence count</returns>
+int countSubstring(const char* str, const char* subStr)
+{
+    const int strLen = strlen(str), subStrLen = strlen(subStr);
+    int occurrenceCount = 0;
+
+    for (int pos = 0, occ; pos < strLen; pos = occ + subStrLen)
+    {
+        occ = findSubstring(str, subStr, pos);
+
+        if (occ == -1)
+            break;
+
+        occurrenceCount++;
+    }
+
+    return occurrenceCount;
 }
 #pragma endregion
 
