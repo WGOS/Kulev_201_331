@@ -354,6 +354,9 @@ bool copyFile(const string fromPathStr, const string toPathStr)
     try
     {
         in.open(fromPathStr);
+        if (!in.good())
+            return false;
+
         out.open(toPathStr);
 
         while (std::getline(in, buf))
@@ -403,6 +406,13 @@ bool copyFile2(const string fromPathStr, const string toPathStr)
 
 bool copyFile3(const string fromPathStr, const string toPathStr)
 {
-    return fs::copy_file(fromPathStr, toPathStr);
+    try
+    {
+        return fs::copy_file(fromPathStr, toPathStr);
+    }
+    catch (const std::exception&)
+    {
+        return false;
+    }
 }
 #pragma endregion
