@@ -178,7 +178,12 @@ void getFileExtOption()
 string getFileExt(const string str)
 {
     string* nameParts = nullptr;
-    const size_t pCnt = strSplit(nameParts, getFileName(str), '.');
+    string name = getFileName(str);
+
+    if (name.empty() || name == ".." || name == ".")
+        return "";
+
+    const size_t pCnt = strSplit(nameParts, name, '.');
     
     if (pCnt <= 0)
         return "";
