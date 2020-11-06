@@ -1,5 +1,6 @@
 // C++ 17
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <filesystem>
 
@@ -15,15 +16,19 @@ void drawMenu();
 void getFileExtOption();
 string getFileExt(const string filePath);
 void getFileNameOption();
-string getFileName(const string filePath, const bool attachExt = true);
+string getFileName(const string filePath);
 void getDirPathOption();
-string getDirPath(const string basePathStr, const string relPathStr);
+string getDirPath(const string filePath);
 void getRootOption();
 string getRoot(const string pathStr);
 void renameFileOption();
 bool renameFile(string* pathStr, const string newName);
 void copyFileOption();
-bool copyFile(const string fromPathStr, const string toPathStr, const bool rewrite = false);
+bool copyFile(const string fromPathStr, const string toPathStr);
+bool copyFile2(const string fromPathStr, const string toPathStr);
+bool copyFile3(const string fromPathStr, const string toPathStr);
+size_t strSplit(string*& subStrings, const string str, const char delimiter);
+string strJoin(const string* subStrings, const size_t size, const char delimiter = NULL);
 #pragma endregion
 
 int main()
@@ -31,6 +36,7 @@ int main()
     drawMenu();
 }
 
+#pragma region Others
 void drawMenu()
 {
     int menuPos = 0, opt;
@@ -40,7 +46,7 @@ void drawMenu()
         printf_s("=== Programm menu ===\n");
         printf_s("%d. Get file extension\n", ++menuPos);
         printf_s("%d. Get file name\n", ++menuPos);
-        printf_s("%d. Get relative path\n", ++menuPos);
+        printf_s("%d. Get parent directory path\n", ++menuPos);
         printf_s("%d. Get root name\n", ++menuPos);
         printf_s("%d. Rename file\n", ++menuPos);
         printf_s("%d. Copy file\n", ++menuPos);
@@ -104,6 +110,56 @@ string readLine()
     return str;
 }
 
+/// <summary>
+/// Split strings to substrings by delimiter
+/// </summary>
+/// <param name="subStrings">Pointer address of sub-strings array</param>
+/// <param name="str">String to split</param>
+/// <param name="delimiter">Delimiter to split string by</param>
+/// <returns>Size of sub-strings array</returns>
+size_t strSplit(string*& subStrings, const string str, const char delimiter)
+{
+    size_t delimOcc = std::count(str.begin(), str.end(), delimiter);
+    if (delimOcc <= 0)
+        return 0;
+
+    subStrings = new string[delimOcc + 1];
+
+    for (size_t pos = 0, nPos, i = 0; i <= delimOcc; i++, pos = nPos + 1)
+    {
+        nPos = str.find(delimiter, pos);
+        subStrings[i] = str.substr(pos, nPos - pos);
+    }
+
+    return delimOcc + 1;
+}
+
+/// <summary>
+/// Join substrings into one string
+/// </summary>
+/// <param name="subStrings">Array of substrings to join</param>
+/// <param name="size">Size of array of substrings</param>
+/// <param name="delimiter">Delimiter between substrings</param>
+/// <returns>Joined string</returns>
+string strJoin(const string* subStrings, const size_t size, const char delimiter)
+{
+    if (size <= 0)
+        return "";
+
+    string jStr = subStrings[0];
+
+    for (size_t i = 1; i < size; i++)
+    {
+        if (delimiter != NULL)
+            jStr += delimiter;
+
+        jStr += subStrings[i];
+    }
+
+    return jStr;
+}
+#pragma endregion
+
 #pragma region Task 1
 /// <summary>
 /// Entry function for 1st task
@@ -117,11 +173,20 @@ void getFileExtOption()
 /// <summary>
 /// Get file extension
 /// </summary>
-/// <param name="str">is path to file</param>
+/// <param name="str">Path to file</param>
 /// <returns>File extension with dot before</returns>
 string getFileExt(const string str)
 {
-    return path(str).extension().string();
+    string* nameParts = nullptr;
+    const size_t pCnt = strSplit(nameParts, getFileName(str), '.');
+    
+    if (pCnt <= 0)
+        return "";
+
+    const string ext = nameParts[pCnt - 1];
+    delete[] nameParts;
+
+    return "." + ext;
 }
 #pragma endregion
 
@@ -133,29 +198,34 @@ void getFileNameOption()
 {
     printf_s("Enter path: ");
     const string path = readLine();
-    printf_s(
-        "File name w/ extension is: %s\n\tw/o extension: %s\n", 
-        getFileName(path).c_str(), 
-        getFileName(path, false).c_str());
+    printf_s("File name is: %s\n",
+        getFileName(path).c_str());
 }
 
 /// <summary>
 /// Get name of file from path
 /// </summary>
 /// <param name="filePath">Path to file</param>
-/// <param name="attachExt">Attach extension to return value</param>
 /// <returns>File name w/ extension by default</returns>
-string getFileName(const string filePath, const bool attachExt)
+string getFileName(const string filePath)
 {
-    const path p(filePath);
-    string name = p.filename().string();
+    string* subs;
+    const size_t partsCount = strSplit(subs, filePath, '\\');
 
-    if (attachExt || !p.has_extension())
-        return name;
+    if (partsCount <= 1)
+        return filePath;
 
-    const string ext = getFileExt(filePath);
+    const string name = subs[partsCount - 1];
+    const string prevName = subs[partsCount - 2];
+    delete[] subs;
 
-    return name.replace(name.length() - ext.length(), ext.length(), "");
+    if (name == prevName && partsCount == 2)
+        return filePath;
+
+    if (name.empty())
+        return prevName;
+
+    return name;
 }
 #pragma endregion
 
@@ -165,13 +235,10 @@ string getFileName(const string filePath, const bool attachExt)
 /// </summary>
 void getDirPathOption()
 {
-    printf_s("Enter base path: ");
-    const string basePathStr = readLine();
+    printf_s("Enter path: ");
+    const string path = readLine();
 
-    printf_s("Enter relative to path: ");
-    const string relPathStr = readLine();
-
-    printf_s("Relative path: %s\n", getDirPath(basePathStr, relPathStr).c_str());
+    printf_s("Parent directory path: %s\n", getDirPath(path).c_str());
 }
 
 /// <summary>
@@ -180,12 +247,15 @@ void getDirPathOption()
 /// <param name="basePathStr">Base path</param>
 /// <param name="relPathStr">Path that base relative to</param>
 /// <returns>Path relative to base</returns>
-string getDirPath(const string basePathStr, const string relPathStr)
+string getDirPath(const string filePath)
 {
-    const path base(basePathStr);
-    const path rel(relPathStr);
-    
-    return fs::relative(base, rel).string();
+    string* pathParts = nullptr;
+    const size_t partCount = strSplit(pathParts, filePath, '\\');
+
+    const string parentPath = strJoin(pathParts, partCount - 1, '\\');
+    delete[] pathParts;
+
+    return parentPath;
 }
 #pragma endregion
 
@@ -206,7 +276,13 @@ void getRootOption()
 /// <returns>Root name</returns>
 string getRoot(const string pathStr)
 {
-    return path(pathStr).root_name().string();
+    string* pathParts = nullptr;
+    strSplit(pathParts, pathStr, '\\');
+
+    const string rootName = pathParts[0];
+    delete[] pathParts;
+
+    return !rootName.empty() ? rootName : "\\";
 }
 #pragma endregion
 
@@ -239,7 +315,7 @@ bool renameFile(string* pathStr, const string newName)
     if (newName.find('\\') != string::npos || newName.find('/') != string::npos)
         return false;
 
-    const string oldName = path(*pathStr).filename().string();
+    const string oldName = getFileName(*pathStr);
 
     *pathStr = (*pathStr).replace((*pathStr).length() - oldName.length(), oldName.length(), newName);
     return true;
@@ -255,10 +331,7 @@ void copyFileOption()
     printf_s("Enter path to file: ");
     const string ogPath = readLine();
 
-    printf_s("Enter destination of file: ");
-    const string dstPath = readLine();
-
-    printf_s("%s\n", copyFile(ogPath, dstPath) ? "File has been copied" : "Can't copy file");
+    printf_s("%s\n", copyFile(ogPath, ogPath + "_copy") ? "File has been copied" : "Can't copy file");
 }
 
 /// <summary>
@@ -266,25 +339,65 @@ void copyFileOption()
 /// </summary>
 /// <param name="fromPathStr">Path to file</param>
 /// <param name="toPathStr">Path of new file dest</param>
-/// <param name="rewrite">Rewrite file if it exists</param>
 /// <returns>Has file been copied</returns>
-bool copyFile(const string fromPathStr, const string toPathStr, const bool rewrite)
+bool copyFile(const string fromPathStr, const string toPathStr)
 {
-    const path from(fromPathStr);
-    const path to(toPathStr);
-
-    if (
-        fs::is_directory(from)
-        || (fs::exists(to) && !rewrite))
-        return false;
+    std::ifstream in;
+    std::ofstream out;
+    string buf;
 
     try
     {
-        return fs::copy_file(from, to);
+        in.open(fromPathStr);
+        out.open(toPathStr);
+
+        while (std::getline(in, buf))
+        {
+            out << buf << std::endl;
+        }
     }
     catch (const std::exception&)
     {
         return false;
     }
+
+    if(in.is_open())
+        in.close();
+
+    if(out.is_open())
+        out.close();
+    
+    return true;
+}
+
+bool copyFile2(const string fromPathStr, const string toPathStr)
+{
+    std::ifstream in;
+    std::ofstream out;
+
+    try
+    {
+        in.open(fromPathStr);
+        out.open(toPathStr);
+
+        out << in.rdbuf();
+    }
+    catch (const std::exception&)
+    {
+        return false;
+    }
+
+    if (in.is_open())
+        in.close();
+
+    if (out.is_open())
+        out.close();
+
+    return true;
+}
+
+bool copyFile3(const string fromPathStr, const string toPathStr)
+{
+    return fs::copy_file(fromPathStr, toPathStr);
 }
 #pragma endregion

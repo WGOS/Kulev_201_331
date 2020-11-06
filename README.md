@@ -10,4 +10,5 @@
 	- [Динамические массивы](/Lab_3_2_Dynamic_Arrays/)
 4. Строки
 	- [C строки](/Lab_4_C_Strings/)
-	- [C++ строки и файлы](/Lab_4_2_CPP_Strings_and_Files/)
+	- [C++ строки и файлы](/Lab_4_2_CPP_Strings_and_Files_NOFS/)
+	- [C++ строки и файлы с использованием filesystem](/Lab_4_2_CPP_Strings_and_Files/)
