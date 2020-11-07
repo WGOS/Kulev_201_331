@@ -29,6 +29,8 @@ bool copyFile2(const string fromPathStr, const string toPathStr);
 bool copyFile3(const string fromPathStr, const string toPathStr);
 size_t strSplit(string*& subStrings, const string str, const char delimiter);
 string strJoin(const string* subStrings, const size_t size, const char delimiter = NULL);
+bool strReplace(string& str, const string subString, const string to, const bool fromLast = false);
+size_t strReplaceAll(string& str, const string subString, const string to);
 #pragma endregion
 
 int main()
@@ -157,6 +159,42 @@ string strJoin(const string* subStrings, const size_t size, const char delimiter
     }
 
     return jStr;
+}
+
+/// <summary>
+/// Replace first occurrence of substring to another string
+/// </summary>
+/// <param name="str">String to replace in</param>
+/// <param name="subString">Substring to replace</param>
+/// <param name="to">Replacement string</param>
+/// <param name="fromLast">Replace last occurrence</param>
+/// <returns>Has substring been replaced</returns>
+bool strReplace(string& str, const string search, const string to, const bool fromLast)
+{
+    size_t pos = fromLast ? str.rfind(search) : str.find(search);
+
+    if (pos == string::npos)
+        return false;
+
+    str.replace(pos, search.length(), to);
+    return true;
+}
+
+/// <summary>
+/// Replace all occurrences of substring to another string
+/// </summary>
+/// <param name="str">String to replace in</param>
+/// <param name="subString">Substring to replace</param>
+/// <param name="to">Replacement string</param>
+/// <returns>Amount of substring occurrences</returns>
+size_t strReplaceAll(string& str, const string subString, const string to)
+{
+    size_t occs = 0;
+
+    while (strReplace(str, subString, to))
+        occs++;
+
+    return occs;
 }
 #pragma endregion
 
@@ -335,8 +373,14 @@ void copyFileOption()
 {
     printf_s("Enter path to file: ");
     const string ogPath = readLine();
+    const string ext = getFileExt(ogPath);
+    string toPath = ogPath;
 
-    printf_s("%s\n", copyFile(ogPath, ogPath + "_copy") ? "File has been copied" : "Can't copy file");
+    if (!ext.empty())
+        strReplace(toPath, ext, "_copy" + ext, true);
+
+
+    printf_s("%s\n", copyFile(ogPath, toPath) ? "File has been copied" : "Can't copy file");
 }
 
 /// <summary>
