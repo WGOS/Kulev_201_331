@@ -38,4 +38,25 @@ namespace Misc
 
         return jStr;
     }
+
+    bool StrExt::Replace(std::string& str, const std::string search, const std::string to, const bool fromLast)
+    {
+        size_t pos = fromLast ? str.rfind(search) : str.find(search);
+
+        if (pos == std::string::npos)
+            return false;
+
+        str.replace(pos, search.length(), to);
+        return true;
+    }
+
+    size_t StrExt::ReplaceAll(std::string& str, const std::string subString, const std::string to)
+    {
+        size_t occs = 0;
+
+        while (StrExt::Replace(str, subString, to))
+            occs++;
+
+        return occs;
+    }
 }
