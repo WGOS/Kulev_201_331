@@ -386,6 +386,9 @@ bool copyFile2(const string fromPathStr, const string toPathStr)
     try
     {
         in.open(fromPathStr);
+        if (!in.good())
+            return false;
+
         out.open(toPathStr);
 
         out << in.rdbuf();
