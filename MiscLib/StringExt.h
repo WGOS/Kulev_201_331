@@ -41,6 +41,6 @@ namespace Misc
 		/// <param name="subString">Substring to replace</param>
 		/// <param name="to">Replacement string</param>
 		/// <returns>Amount of substring occurrences</returns>
-		size_t ReplaceAll(std::string& str, const std::string subString, const std::string to);
+		static size_t ReplaceAll(std::string& str, const std::string subString, const std::string to);
 	};
 }
