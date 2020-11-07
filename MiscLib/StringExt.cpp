@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "StringExt.h"
-#include <iostream>
 
 namespace Misc
 {
