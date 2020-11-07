@@ -295,7 +295,11 @@ void encrypt(char* str, const int key)
             offset = isUpperC(str[i]) ? 'A' : 'a';
         }
 
-        str[i] = char(int(str[i] + key - offset) % alphabetStrengh + offset);
+        int offsChar = int(str[i] + key - offset);
+        if (offsChar < 0)
+            offsChar += alphabetStrengh;
+
+        str[i] = char(offsChar % alphabetStrengh + offset);
     }
 }
 

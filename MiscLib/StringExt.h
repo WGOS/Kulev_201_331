@@ -3,8 +3,9 @@
 
 namespace Misc
 {
-	namespace Str
+	class StrExt
 	{
+	public:
 		/// <summary>
 		/// Split strings to substrings by delimiter
 		/// </summary>
@@ -12,7 +13,7 @@ namespace Misc
 		/// <param name="delimiter">Delimiter to split string by</param>
 		/// <param name="subStrings">Pointer address of sub-strings array</param>
 		/// <returns>Size of sub-strings array</returns>
-		size_t Split(const std::string& str, const char delimiter, std::string*& subStrings);
+		static size_t Split(const std::string& str, const char delimiter, std::string*& subStrings);
 
 		/// <summary>
 		/// Join substrings into one string
@@ -21,6 +22,6 @@ namespace Misc
 		/// <param name="size">Size of array of substrings</param>
 		/// <param name="delimiter">Delimiter between substrings</param>
 		/// <returns>Joined string</returns>
-		std::string Join(const std::string* subStrings, const size_t size, const char delimiter);
-	}
+		static std::string Join(const std::string* subStrings, const size_t size, const char delimiter);
+	};
 }
