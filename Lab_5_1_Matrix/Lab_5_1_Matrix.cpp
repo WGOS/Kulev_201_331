@@ -1,3 +1,5 @@
+// LIBRARIES AVAILABLE IN REPO
+// https://github.com/WGOS/Kulev_201_331
 #include <iostream>
 #include <ConsoleExt.h>
 #include <Matrix.h>
@@ -168,5 +170,5 @@ void getElm(Matrix& matr)
     printf_s("Enter j: ");
     size_t j = std::stoul(Console::ReadLine());
 
-    printf_s("[%u, %u] = %f", i, j, matr[i, j]);
+    printf_s("[%u, %u] = %f\n", i, j, matr[i][j]);
 }
