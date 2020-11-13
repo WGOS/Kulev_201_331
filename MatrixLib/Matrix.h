@@ -6,10 +6,13 @@
 class Matrix
 {
 public:
+	Matrix();
 	Matrix(const size_t rows, const size_t columns);
 	Matrix(const size_t rows, const size_t columns, double*& elements);
 	Matrix(const Matrix& matr);
+	~Matrix();
 
+	Matrix& operator=(const Matrix& matr);
 	static Matrix Sum(const Matrix& matr1, const Matrix& matr2);
 	Matrix operator+(const Matrix& matr);
 	Matrix Sum(const Matrix& matr);
@@ -28,8 +31,10 @@ public:
 	size_t GetColumns();
 	bool Dispose();
 private:
-	const size_t rows, columns;
+	size_t rows, columns;
 	double* elements;
 
 	void static CheckMatrix(const size_t rows, const size_t columns);
+	std::string static ReadLine();
+	bool static ReadDouble(double& num);
 };

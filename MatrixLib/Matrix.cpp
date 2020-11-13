@@ -4,6 +4,10 @@
 #include <iostream>
 #include <limits>
 
+Matrix::Matrix() : rows(0), columns(0), elements(nullptr)
+{
+}
+
 Matrix::Matrix(const size_t rows, const size_t columns)
 	: rows(rows), columns(columns)
 {
@@ -29,7 +33,12 @@ Matrix::Matrix(const Matrix& matr) : rows(matr.rows), columns(matr.columns)
 	size_t size = rows * columns;
 
 	elements = new double[size];
-	std::copy(matr.elements, matr.elements + size, elements);
+	std::copy(&matr.elements[0], &matr.elements[0] + size, elements);
+}
+
+Matrix::~Matrix()
+{
+	Dispose();
 }
 
 void Matrix::CheckMatrix(const size_t rows, const size_t columns)
@@ -40,6 +49,51 @@ void Matrix::CheckMatrix(const size_t rows, const size_t columns)
 	if (std::numeric_limits<size_t>::max() < unsigned long long(rows) * unsigned long long(columns))
 		throw std::invalid_argument(
 			std::string("Size of matrix is too high (more than " + std::to_string(std::numeric_limits<size_t>::max()) + ")"));
+}
+
+std::string Matrix::ReadLine()
+{
+	std::string buf;
+	std::getline(std::cin, buf);
+	return buf;
+}
+
+bool Matrix::ReadDouble(double& num)
+{
+	try
+	{
+		num = std::stod(ReadLine());
+	}
+	catch (const std::exception&)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+Matrix& Matrix::operator=(const Matrix& matr)
+{
+	if (&matr == this)
+		return *this;
+
+	size_t size = rows * columns;
+
+	if (size != matr.rows * matr.columns)
+	{
+		if(elements != nullptr)
+			delete[] elements;
+
+		size = matr.rows * matr.columns;
+
+		elements = new double[size];
+	}
+
+	rows = matr.rows;
+	columns = matr.columns;
+
+	std::copy(&matr.elements[0], &matr.elements[0] + size, &elements[0]);
+	return *this;
 }
 
 Matrix Matrix::Sum(const Matrix& matr1, const Matrix& matr2)
@@ -149,12 +203,17 @@ double Matrix::Trace()
 void Matrix::Input()
 {
 	printf_s("Input matrix now. Format is [row, column] = value\n");
+	
+	double elm;
 	for (size_t i = 0; i < rows; i++)
 		for (size_t j = 0; j < columns; j++)
 		{
-			printf_s("[%d, %d] = ", i, j);
-
-			std::cin >> this->operator[](i)[j];
+			do
+			{
+				printf_s("[%d, %d] = ", i, j);
+			} while (!ReadDouble(elm));
+			
+			this->operator[](i)[j] = elm;
 		}
 }
 
@@ -192,5 +251,8 @@ bool Matrix::Dispose()
 		return false;
 
 	delete[] elements;
+	elements = nullptr;
+	rows = 0;
+	columns = 0;
 	return true;
 }
