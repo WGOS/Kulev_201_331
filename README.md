@@ -12,3 +12,5 @@
 	- [C строки](/Lab_4_C_Strings/)
 	- [C++ строки и файлы](/Lab_4_2_CPP_Strings_and_Files_NOFS/)
 	- [C++ строки и файлы с использованием filesystem](/Lab_4_2_CPP_Strings_and_Files/)
+5. Классы
+	- [Матрица](/Lab_5_1_Matrix/)
