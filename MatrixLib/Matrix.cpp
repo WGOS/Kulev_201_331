@@ -182,7 +182,7 @@ Matrix Matrix::operator*(const double num)
 Row Matrix::operator[](const size_t row)
 {
 	if (row >= rows)
-		throw std::invalid_argument(std::string("Row value larger than maximum rows available! Range is 0.." + std::to_string(rows)));
+		throw std::invalid_argument(std::string("Row value larger than maximum rows available! Range is 0.." + std::to_string(rows - 1)));
 
 	return Row(elements + row * columns, columns);
 }

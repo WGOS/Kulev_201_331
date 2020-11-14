@@ -54,52 +54,60 @@ void drawMenu()
             continue;
         }
 
-        switch (opt)
+        try
         {
-        case 1:
-            inputMatrix(matr);
-            break;
+            switch (opt)
+            {
+            case 1:
+                inputMatrix(matr);
+                break;
 
-        case 2:
-            matr.Print();
-            break;
+            case 2:
+                matr.Print();
+                break;
 
-        case 3:
-            multiplyMbM(matr);
-            break;
+            case 3:
+                multiplyMbM(matr);
+                break;
 
-        case 4:
-            multiplyMbN(matr);
-            break;
+            case 4:
+                multiplyMbN(matr);
+                break;
 
-        case 5:
-            summ(matr);
-            break;
+            case 5:
+                summ(matr);
+                break;
 
-        case 6:
-            printf_s("Matrix trace: %f\n", matr.Trace());
-            break;
+            case 6:
+                printf_s("Matrix trace: %f\n", matr.Trace());
+                break;
 
-        case 7:
-            printf_s("Row count: %u", matr.GetRows());
-            break;
+            case 7:
+                printf_s("Row count: %u", matr.GetRows());
+                break;
 
-        case 8:
-            printf_s("Column count: %u", matr.GetColumns());
-            break;
+            case 8:
+                printf_s("Column count: %u", matr.GetColumns());
+                break;
 
-        case 9:
-            getElm(matr);
-            break;
+            case 9:
+                getElm(matr);
+                break;
 
-        case 10:
-            printf_s("Exititng\n");
-            return;
+            case 10:
+                printf_s("Exititng\n");
+                return;
 
-        default:
-            printf_s("Unknown option\n");
-            break;
+            default:
+                printf_s("Unknown option\n");
+                break;
+            }
         }
+        catch (const std::exception& e)
+        {
+            printf_s(">>>>>>>>>>>>>>\nError!\n%s\n>>>>>>>>>>>>>>\n", e.what());
+        }
+        
     }
 }
 
@@ -118,20 +126,13 @@ void inputMatrix(Matrix& matr)
 void multiplyMbM(Matrix& matr)
 {
     printf_s("Enter values for new matrix\n");
-    
+
     Matrix inpM;
     inputMatrix(inpM);
 
-    try
-    {
-        Matrix res = matr * inpM;
-        printf_s("Multiply result:\n");
-        res.Print();
-    }
-    catch (const std::exception& e)
-    {
-        printf_s("Error!\n%s", e.what());
-    }
+    Matrix res = matr * inpM;
+    printf_s("Multiply result:\n");
+    res.Print();
 }
 
 void multiplyMbN(Matrix& matr)
@@ -150,16 +151,9 @@ void summ(Matrix& matr)
     Matrix inpM;
     inputMatrix(inpM);
 
-    try
-    {
-        Matrix res = matr + inpM;
-        printf_s("Summ:\n");
-        res.Print();
-    }
-    catch (const std::exception& e)
-    {
-        printf_s("Error!\n%s", e.what());
-    }
+    Matrix res = matr + inpM;
+    printf_s("Summ:\n");
+    res.Print();
 }
 
 void getElm(Matrix& matr)

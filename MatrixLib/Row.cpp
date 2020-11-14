@@ -11,7 +11,7 @@ Row::Row(double* elementPtr, const size_t columns) : ptr(elementPtr), columns(co
 double& Row::operator[](const size_t coulumn)
 {
 	if (coulumn >= columns)
-		throw std::invalid_argument(std::string("Column value larger than maximum culomns available! Range is 0.." + std::to_string(columns)));
+		throw std::invalid_argument(std::string("Column value larger than maximum culomns available! Range is 0.." + std::to_string(columns - 1)));
 
 	return ptr[coulumn];
 }
