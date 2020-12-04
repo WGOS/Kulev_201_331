@@ -14,6 +14,8 @@ void multiplyMbM(Matrix& matr);
 void multiplyMbN(Matrix& matr);
 void summ(Matrix& matr);
 void getElm(Matrix& matr);
+void fInOption(Matrix& matr);
+void fOutOption(Matrix& matr);
 #pragma endregion
 
 
@@ -40,6 +42,10 @@ void drawMenu()
         printf_s("%d. Get row count\n", ++menuPos);
         printf_s("%d. Get column count\n", ++menuPos);
         printf_s("%d. Get element\n", ++menuPos);
+        printf_s("%d. Input via cin\n", ++menuPos);
+        printf_s("%d. Output via cout\n", ++menuPos);
+        printf_s("%d. Input from file\n", ++menuPos);
+        printf_s("%d. Output to file\n", ++menuPos);
         printf_s("%d. Exit\n", ++menuPos);
         printf_s("Choose one option: ");
 
@@ -82,11 +88,11 @@ void drawMenu()
             break;
 
         case 7:
-            printf_s("Row count: %u", matr.GetRows());
+            printf_s("Row count: %u\n", matr.GetRows());
             break;
 
         case 8:
-            printf_s("Column count: %u", matr.GetColumns());
+            printf_s("Column count: %u\n", matr.GetColumns());
             break;
 
         case 9:
@@ -94,6 +100,22 @@ void drawMenu()
             break;
 
         case 10:
+            std::cin >> matr;
+            break;
+
+        case 11:
+            std::cout << matr;
+            break;
+
+        case 12:
+            fInOption(matr);
+            break;
+
+        case 13:
+            fOutOption(matr);
+            break;
+
+        case 14:
             printf_s("Exititng\n");
             return;
 
@@ -172,4 +194,48 @@ void getElm(Matrix& matr)
     size_t j = std::stoul(Console::ReadLine());
 
     printf_s("[%u, %u] = %f\n", i, j, matr[i][j]);
+}
+
+void fInOption(Matrix& matr)
+{
+    printf_s("Enter file path: ");
+    std::string fPath = Console::ReadLine();
+
+    std::ifstream input;
+
+    try 
+    {
+        input.open(fPath);
+        input >> matr;
+
+        printf_s("Read matrix from file %s\n", fPath.c_str());
+
+        input.close();
+    }
+    catch (std::exception& e)
+    {
+        printf_s("Error!\n%s", e.what());
+    }
+}
+
+void fOutOption(Matrix& matr)
+{
+    printf_s("Enter file path: ");
+    std::string fPath = Console::ReadLine();
+
+    std::ofstream output;
+
+    try
+    {
+        output.open(fPath);
+        output << matr;
+
+        printf_s("Output matrix to file %s\n", fPath.c_str());
+
+        output.close();
+    }
+    catch (std::exception& e)
+    {
+        printf_s("Error!\n%s", e.what());
+    }
 }
