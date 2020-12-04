@@ -3,6 +3,7 @@
 #include <iostream>
 #include <ConsoleExt.h>
 #include <Matrix.h>
+#include <fstream>
 
 using Misc::Console;
 
