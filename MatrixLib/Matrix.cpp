@@ -256,3 +256,31 @@ bool Matrix::Dispose()
 	columns = 0;
 	return true;
 }
+
+std::istream& operator>>(std::istream& in, Matrix& matr)
+{
+	matr.Dispose();
+
+	in >> matr.rows;
+	in >> matr.columns;
+
+	Matrix::CheckMatrix(matr.rows, matr.columns);
+
+	matr.elements = new double[matr.rows * matr.columns];
+
+	for (size_t i = 0; i < matr.columns * matr.rows; i++)
+		in >> matr.elements[i];
+
+	return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const Matrix& matr)
+{
+	out << matr.rows << std::endl;
+	out << matr.columns << std::endl;
+
+	for (size_t i = 0; i < matr.rows * matr.columns; i++)
+		out << matr.elements[i] << std::endl;
+
+	return out;
+}

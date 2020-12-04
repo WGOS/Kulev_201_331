@@ -2,6 +2,7 @@
 #include "Row.h"
 
 #include <string>
+#include <iostream>
 
 class Matrix
 {
@@ -30,6 +31,8 @@ public:
 	size_t GetRows();
 	size_t GetColumns();
 	bool Dispose();
+	friend std::istream& operator>>(std::istream& in, Matrix& matr);
+	friend std::ostream& operator<<(std::ostream& out, const Matrix& matr);
 private:
 	size_t rows, columns;
 	double* elements;
