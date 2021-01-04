@@ -42,5 +42,11 @@ namespace Misc
 		/// <param name="to">Replacement string</param>
 		/// <returns>Amount of substring occurrences</returns>
 		static size_t ReplaceAll(std::string& str, const std::string subString, const std::string to);
+
+		/// <summary>
+		/// Turn string to lower case
+		/// </summary>
+		/// <param name="str">Input string</param>
+		static void ToLower(std::string& str);
 	};
 }

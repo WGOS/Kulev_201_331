@@ -15,6 +15,15 @@
 	- [C++ строки и файлы с использованием filesystem](/Lab_4_2_CPP_Strings_and_Files/)
 5. Классы
 	- [Матрица](/Lab_5_1_Matrix/)
+	- [Наследование](/Lab_5_4_Inheritance/)
+6. Структуры данных
+	- [stack](/Lab_6_1_stack/)
+	- [deque](/Lab_6_2_deque/)
+	- [queue](/Lab_6_3_queue/)
+	- [set](/Lab_6_4_set/)
+	- [list](/Lab_6_5_list/)
+	- [map](/Lab_6_6_map/)
+7. [Шаблоны](/Lab_7_Templates/)
 
 ### Библиотеки
 * [Матрицы](/MatrixLib/)
