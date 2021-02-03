@@ -74,8 +74,10 @@ void inputStack()
         {
             size_t enclosureIndex = brackets[1].find(c);
 
-            if (strStack.top() == brackets[0][enclosureIndex])
+            if (!strStack.empty() && strStack.top() == brackets[0][enclosureIndex])
                 strStack.pop();
+            else if (strStack.empty())
+                strStack.push(c);
         }
     }
 
